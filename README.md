@@ -1,3 +1,6 @@
+# Tiny Language Compiler (Front End)
+
+A scanner and recursive-descent parser for the **Tiny** programming language, written in C# with a Windows Forms UI that shows the token stream, the parse tree, and any errors.
 
 ---
 
@@ -17,24 +20,39 @@
 
 ## ⚙️ How It Works
 
-1. **Lexical Analysis**  
-   The lexer uses the defined regex patterns and DFAs to scan source code and break it down into valid tokens.
+1. **Lexical analysis** — [`Scanner.cs`](Tiny_language/JASON_Compiler/Scanner.cs)
+   Scans the source character by character into tokens, using reserved-word and operator tables plus regular expressions for identifiers and numbers. Lexical errors (invalid tokens or identifiers, malformed numbers, unclosed comments) are reported.
 
-2. **Syntax Analysis**  
-   The parser checks if the sequence of tokens adheres to the CFG, ensuring the code is syntactically valid according to the Tiny Language rules.
+2. **Syntax analysis** — [`Parser.cs`](Tiny_language/JASON_Compiler/Parser.cs)
+   A recursive-descent parser with one method per grammar rule (program, functions, declarations, `if`/`elseif`/`else`, `repeat … until`, boolean conditions, expressions, function calls). Left recursion is removed from the grammar, and the parser builds a parse tree.
 
----
+3. **UI** — [`Form1.cs`](Tiny_language/JASON_Compiler/Form1.cs)
+   Paste Tiny source code, compile, and inspect the token table, the parse tree, and the error list.
 
-## 🚀 Getting Started
-
-This repository focuses on the **design**.  
-You can adapt it to any programming language or compiler toolchain:
-- **Lexer:** Implement using tools like Lex/Flex or custom regex libraries.
-- **Parser:** Implement using Yacc/Bison or recursive descent parsers.
+The context-free grammar is documented in [`Tiny_Language_CFG_Final.docx`](Tiny_Language_CFG_Final.docx).
 
 ---
 
-## ✅ Status
+## 🚀 Running It
 
-- ✔️ **Phase 1**: Lexical Analyzer Design — Completed
-- ✔️ **Phase 2**: Parser CFG Design — Completed
+Requires Windows, Visual Studio, and .NET Framework 4.8.
+
+1. Open `Tiny_language/JASON_Compiler.sln` in Visual Studio.
+2. Build and run (F5).
+3. Paste a Tiny program into the editor and compile it.
+
+---
+
+## 📁 Layout
+
+```
+Tiny_language/
+├── JASON_Compiler.sln
+└── JASON_Compiler/
+    ├── Scanner.cs          # tokens, reserved words, operators
+    ├── Parser.cs           # recursive-descent parser + parse tree
+    ├── Errors.cs           # shared error list
+    ├── JASON_Compiler.cs   # runs scanner then parser
+    └── Form1.cs            # WinForms UI
+Tiny_Language_CFG_Final.docx  # grammar
+```
